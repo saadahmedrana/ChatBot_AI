@@ -64,43 +64,50 @@ export default function Home() {
     scrollToBottom();
   }, [messages]);
 
-  useEffect(() => {
-    const img = new Image();
-    img.src = "/best.jpg";  // Corrected path
-    img.onload = () => console.log("Image loaded successfully");
-    img.onerror = (err) => console.error("Failed to load image", err);
-  }, []);
-
   return (
     <Box
       sx={{
-        p: 2,
-        backgroundImage: 'url("/best.jpg")',  // Corrected path
-        backgroundSize: 'cover',  // Ensure the image covers the whole area
+        margin: 0,  // Remove default margin
+        padding: 0,  // Remove default padding
+        height: '100vh',  // Ensure it covers the full viewport height
+        width: '100vw',  // Ensure it covers the full viewport width
+        backgroundImage: 'url("/best.jpg")',  // Correct path to the image
+        backgroundSize: 'cover',  // Ensure the image covers the entire area
         backgroundPosition: 'center',  // Center the image
-        minHeight: '100vh',  // Ensure it covers the full height
+        backgroundRepeat: 'no-repeat',  // Prevent the image from repeating
+        overflow: 'hidden',  // Hide any overflow
         display: 'flex',
         flexDirection: 'column',
       }}
     >
       <Stack
         sx={{
-          height: '80vh',
-          overflowY: 'scroll',
+          flexGrow: 1,  // Allow the chat box to grow
+          overflow: 'hidden',  // Hide scrollbars
           padding: 2,  // Add padding for a better layout
-          backgroundColor: 'rgba(255, 255, 255, 0.5)',  // Transparent background for readability
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Semi-transparent background for readability
           borderRadius: '8px',  // Rounded corners
+          height: 'calc(100vh - 80px)',  // Adjust height to avoid bottom scrollbar
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <Stack sx={{ flexGrow: 1 }}>
+        <Stack
+          sx={{
+            flexGrow: 1,
+            overflowY: 'auto',  // Allow vertical scrolling within the chat area
+            marginBottom: 2,  // Add margin to avoid overlapping with input area
+          }}
+        >
           {messages.map((message, index) => (
             <div key={index} style={{
               marginBottom: '8px',
               padding: '8px',
               borderRadius: '4px',
               backgroundColor: message.role === 'assistant' ? '#000000' : '#000000',  // Black background
-              border: '1px solid #ccc',
+              border: 'none',  // No border
               color: message.role === 'assistant' ? '#00FF00' : '#00FF00', // Green text color
+              wordBreak: 'break-word',  // Break long words
             }}>
               {message.role === 'assistant' ? (
                 <div><b>Assistant:</b> {message.content}</div>

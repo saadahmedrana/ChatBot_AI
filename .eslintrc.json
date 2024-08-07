@@ -1,7 +1,3 @@
 {
-  "extends": "next",
-  "rules": {
-    // Your custom rules here
-  }
+  "extends": "next"
 }
-npm install
