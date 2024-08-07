@@ -64,11 +64,20 @@ export default function Home() {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/best.jpg";  // Corrected path
+    img.onload = () => console.log("Image loaded successfully");
+    img.onerror = (err) => console.error("Failed to load image", err);
+  }, []);
+
   return (
     <Box
       sx={{
         p: 2,
-        backgroundColor: '#d0f0c0',  // Light green background
+        backgroundImage: 'url("/best.jpg")',  // Corrected path
+        backgroundSize: 'cover',  // Ensure the image covers the whole area
+        backgroundPosition: 'center',  // Center the image
         minHeight: '100vh',  // Ensure it covers the full height
         display: 'flex',
         flexDirection: 'column',
@@ -79,6 +88,8 @@ export default function Home() {
           height: '80vh',
           overflowY: 'scroll',
           padding: 2,  // Add padding for a better layout
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',  // Transparent background for readability
+          borderRadius: '8px',  // Rounded corners
         }}
       >
         <Stack sx={{ flexGrow: 1 }}>
@@ -87,9 +98,9 @@ export default function Home() {
               marginBottom: '8px',
               padding: '8px',
               borderRadius: '4px',
-              backgroundColor: message.role === 'assistant' ? '#ffffff' : '#f0f0f0',
+              backgroundColor: message.role === 'assistant' ? '#000000' : '#000000',  // Black background
               border: '1px solid #ccc',
-              color: message.role === 'assistant' ? '#000000' : '#000000', // Black text color
+              color: message.role === 'assistant' ? '#00FF00' : '#00FF00', // Green text color
             }}>
               {message.role === 'assistant' ? (
                 <div><b>Assistant:</b> {message.content}</div>
@@ -109,20 +120,23 @@ export default function Home() {
             onKeyPress={handleKeyPress}
             disabled={isLoading}
             sx={{
-              borderColor: '#ffffff',  // White border
               '& .MuiOutlinedInput-root': {
+                backgroundColor: '#000000',  // Black background
                 '& fieldset': {
-                  borderColor: '#ffffff',  // White border
+                  borderColor: '#00FF00',  // Green border
                 },
                 '&:hover fieldset': {
-                  borderColor: '#ffffff',  // White border on hover
+                  borderColor: '#00FF00',  // Green border on hover
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: '#ffffff',  // White border when focused
+                  borderColor: '#00FF00',  // Green border when focused
+                },
+                '& input': {
+                  color: '#00FF00',  // Green text color
                 },
               },
-              '& input': {
-                color: '#000000',  // Black text color
+              '& .MuiInputLabel-root': {
+                color: '#00FF00',  // Green label color
               },
             }}
           />
