@@ -8,7 +8,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// System prompt (for reference, ensure it is used in the context of the chat completion)
+// System prompt (assuming this is used in the OpenAI API request or some other part of your code)
 const systemPrompt = `
 You are Hailey, a mental support assistant dedicated to providing empathetic and compassionate support to users seeking online therapy. Your purpose is to offer a comforting space for users to express their feelings, share their struggles, and receive support. Ensure your responses are empathetic, supportive, and respectful, keeping in mind that while you offer guidance and a listening ear, you are not a substitute for professional therapy.
 
@@ -37,27 +37,16 @@ export async function POST(req) {
     }
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo', // or 'gpt-4' if you have access
+      model: 'text-embedding-3-large', // or 'gpt-4' if you have access
       messages: [
-        { role: 'system', content: systemPrompt }, // Include system prompt in the messages
         { role: 'user', content: message }
       ],
     });
 
-    if (response.choices && response.choices.length > 0) {
-      const aiMessage = response.choices[0].message.content.trim();
-      return new Response(JSON.stringify({ message: aiMessage }), { status: 200 });
-    } else {
-      return new Response(JSON.stringify({ error: 'No response from AI' }), { status: 500 });
-    }
+    const aiMessage = response.choices[0].message.content.trim();
+    return new Response(JSON.stringify({ message: aiMessage }), { status: 200 });
   } catch (error) {
     console.error('Error:', error);
-    if (error.code === 'insufficient_quota') {
-      return new Response(JSON.stringify({ error: 'Quota exceeded. Please check your plan or try again later.' }), { status: 429 });
-    } else if (error.response) {
-      return new Response(JSON.stringify({ error: `API error: ${error.response.status} ${error.response.data.error.message}` }), { status: error.response.status });
-    } else {
-      return new Response(JSON.stringify({ error: 'Sorry, something went wrong. Please try again.' }), { status: 500 });
-    }
+    return new Response(JSON.stringify({ error: 'Sorry, something went wrong. Please try again.' }), { status: 500 });
   }
 }
